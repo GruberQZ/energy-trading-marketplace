@@ -5,5 +5,6 @@ Chaincode Version 3 replaces Chaincode Version 2 and offers the following improv
 - Redesigned interface for purchasing and refunding energy  
 - Ability to inject transactions directly in order to easily produce data for the website  
   
-[Chaincode Version 2 Documentation](chaincodev2/README.md)  
+  
 [Chaincode Version 3 Documentation](chaincodev3/README.md)  
+[Chaincode Version 2 Documentation](chaincodev2/README.md)  
