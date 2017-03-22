@@ -221,6 +221,10 @@ func read(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 	if len(args) != 1 {
 		return createQueryResponseString(false, "Incorrect number of arguments. Expecting 1: name of variable to query")
 	}
+	// Check variable name
+	if len(args[0]) == 0 {
+		return createQueryResponseString(false,	"First argument (variable name) cannot be an empty string")
+	}
 
 	// Debug message
 	fmt.Println("Trying to read variable named " + args[0])
@@ -325,6 +329,10 @@ func getCustomer(stub shim.ChaincodeStubInterface, args []string) ([]byte, error
 	if len(args) != 1 {
 		return createQueryResponseString(false, "Incorrect number of arguments. Expecting 1: Customer ID")
 	}
+	// Check customer name
+	if len(args[0]) == 0 {
+		return createQueryResponseString(false,	"First argument (customer name) cannot be an empty string")
+	}
 
 	// Convert customer ID argument to lowercase
 	customerID := strings.ToLower(args[0])
@@ -385,6 +393,13 @@ func addOfferQuantity(stub shim.ChaincodeStubInterface, args []string) ([]byte,e
 		retStr = "Incorrect number of arguments. Expecting 2: offer ID, quantity to add to the offer"
 		fmt.Println(retStr)
 		return []byte(retStr), errors.New(retStr)
+	}
+	// Check variable lengths
+	if len(args[0]) == 0 {
+		return createQueryResponseString(false,	"First argument (offer ID) cannot be an empty string")
+	}
+	if len(args[1]) == 0 {
+		return createQueryResponseString(false,	"Second argument (quantity to add) cannot be an empty string")
 	}
 
 	// Check to make sure offer ID is a valid integer and not less than or equal to 0
@@ -453,6 +468,13 @@ func subtractOfferQuantity(stub shim.ChaincodeStubInterface, args []string) ([]b
 		retStr = "Incorrect number of arguments. Expecting 2: offer ID, quantity to subtract from the offer"
 		fmt.Println(retStr)
 		return []byte(retStr), errors.New(retStr)
+	}
+	// Check variable lengths
+	if len(args[0]) == 0 {
+		return createQueryResponseString(false,	"First argument (offer ID) cannot be an empty string")
+	}
+	if len(args[1]) == 0 {
+		return createQueryResponseString(false,	"Second argument (quantity to subtract) cannot be an empty string")
 	}
 
 	// Check to make sure offer ID is a valid integer and not less than or equal to 0
@@ -531,6 +553,10 @@ func addCustomer(stub shim.ChaincodeStubInterface, args []string) ([]byte,error)
 		fmt.Println(retStr)
 		return []byte(retStr), errors.New(retStr)
 	}
+	// Check variable lengths
+	if len(args[0]) == 0 {
+		return createQueryResponseString(false,	"First argument (customer ID) cannot be an empty string")
+	}
 
 	// Debug message
 	fmt.Println("Trying to add a customer with ID " + args[0])
@@ -578,6 +604,13 @@ func addCustomerFunds(stub shim.ChaincodeStubInterface, args []string) ([]byte,e
 		retStr = "Incorrect number of arguments. Expecting 2: customer ID, amount to add"
 		fmt.Println(retStr)
 		return []byte(retStr), errors.New(retStr)
+	}
+	// Check variable lengths
+	if len(args[0]) == 0 {
+		return createQueryResponseString(false,	"First argument (customer ID) cannot be an empty string")
+	}
+	if len(args[1]) == 0 {
+		return createQueryResponseString(false,	"Second argument (amount to add) cannot be an empty string")
 	}
 
 	// Debug message
@@ -639,6 +672,13 @@ func acceptOffer(stub shim.ChaincodeStubInterface, args []string) ([]byte, error
 		retStr = "Incorrect number of arguments. Expecting 2: customer ID, units of energy to buy"
 		fmt.Println(retStr)
 		return []byte(retStr), errors.New(retStr)
+	}
+	// Check variable lengths
+	if len(args[0]) == 0 {
+		return createQueryResponseString(false,	"First argument (customer ID) cannot be an empty string")
+	}
+	if len(args[1]) == 0 {
+		return createQueryResponseString(false,	"Second argument (quantity to buy) cannot be an empty string")
 	}
 
 	// Debug message
@@ -883,6 +923,11 @@ func cancelTransaction(stub shim.ChaincodeStubInterface, args []string) ([]byte,
 		fmt.Println(retStr)
 		return []byte(retStr), errors.New(retStr)
 	}
+	// Check variable lengths
+	if len(args[0]) == 0 {
+		return createQueryResponseString(false,	"First argument (units to refund) cannot be an empty string")
+	}
+
 	unitsToRefund, err := strconv.Atoi(args[0])
 	if err != nil {
 		retStr = "Could not convert " + args[0] + " to integer"
