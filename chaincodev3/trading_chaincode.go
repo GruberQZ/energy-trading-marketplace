@@ -396,10 +396,14 @@ func addOfferQuantity(stub shim.ChaincodeStubInterface, args []string) ([]byte,e
 	}
 	// Check variable lengths
 	if len(args[0]) == 0 {
-		return createQueryResponseString(false,	"First argument (offer ID) cannot be an empty string")
+		retStr = "First argument (offer ID) cannot be an empty string"
+		fmt.Println(retStr)
+		return []byte(retStr), errors.New(retStr)
 	}
 	if len(args[1]) == 0 {
-		return createQueryResponseString(false,	"Second argument (quantity to add) cannot be an empty string")
+		retStr = "Second argument (quantity to add) cannot be an empty string"
+		fmt.Println(retStr)
+		return []byte(retStr), errors.New(retStr)
 	}
 
 	// Check to make sure offer ID is a valid integer and not less than or equal to 0
@@ -471,10 +475,14 @@ func subtractOfferQuantity(stub shim.ChaincodeStubInterface, args []string) ([]b
 	}
 	// Check variable lengths
 	if len(args[0]) == 0 {
-		return createQueryResponseString(false,	"First argument (offer ID) cannot be an empty string")
+		retStr = "First argument (offer ID) cannot be an empty string"
+		fmt.Println(retStr)
+		return []byte(retStr), errors.New(retStr)
 	}
 	if len(args[1]) == 0 {
-		return createQueryResponseString(false,	"Second argument (quantity to subtract) cannot be an empty string")
+		retStr = "Second argument (quantity to subtract) cannot be an empty string"
+		fmt.Println(retStr)
+		return []byte(retStr), errors.New(retStr)
 	}
 
 	// Check to make sure offer ID is a valid integer and not less than or equal to 0
@@ -555,7 +563,9 @@ func addCustomer(stub shim.ChaincodeStubInterface, args []string) ([]byte,error)
 	}
 	// Check variable lengths
 	if len(args[0]) == 0 {
-		return createQueryResponseString(false,	"First argument (customer ID) cannot be an empty string")
+		retStr = "First argument (customer ID) cannot be an empty string"
+		fmt.Println(retStr)
+		return []byte(retStr), errors.New(retStr)
 	}
 
 	// Debug message
@@ -607,10 +617,14 @@ func addCustomerFunds(stub shim.ChaincodeStubInterface, args []string) ([]byte,e
 	}
 	// Check variable lengths
 	if len(args[0]) == 0 {
-		return createQueryResponseString(false,	"First argument (customer ID) cannot be an empty string")
+		retStr = "First argument (customer ID) cannot be an empty string"
+		fmt.Println(retStr)
+		return []byte(retStr), errors.New(retStr)
 	}
 	if len(args[1]) == 0 {
-		return createQueryResponseString(false,	"Second argument (amount to add) cannot be an empty string")
+		retStr = "Second argument (amount to add) cannot be an empty string"
+		fmt.Println(retStr)
+		return []byte(retStr), errors.New(retStr)
 	}
 
 	// Debug message
@@ -675,10 +689,14 @@ func acceptOffer(stub shim.ChaincodeStubInterface, args []string) ([]byte, error
 	}
 	// Check variable lengths
 	if len(args[0]) == 0 {
-		return createQueryResponseString(false,	"First argument (customer ID) cannot be an empty string")
+		retStr = "First argument (customer ID) cannot be an empty string"
+		fmt.Println(retStr)
+		return []byte(retStr), errors.New(retStr)
 	}
 	if len(args[1]) == 0 {
-		return createQueryResponseString(false,	"Second argument (quantity to buy) cannot be an empty string")
+		retStr = "Second argument (quantity to buy) cannot be an empty string"
+		fmt.Println(retStr)
+		return []byte(retStr), errors.New(retStr)
 	}
 
 	// Debug message
@@ -925,7 +943,9 @@ func cancelTransaction(stub shim.ChaincodeStubInterface, args []string) ([]byte,
 	}
 	// Check variable lengths
 	if len(args[0]) == 0 {
-		return createQueryResponseString(false,	"First argument (units to refund) cannot be an empty string")
+		retStr = "First argument (units to refund) cannot be an empty string"
+		fmt.Println(retStr)
+		return []byte(retStr), errors.New(retStr)
 	}
 
 	unitsToRefund, err := strconv.Atoi(args[0])
