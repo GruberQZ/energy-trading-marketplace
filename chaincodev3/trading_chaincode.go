@@ -797,6 +797,10 @@ func acceptOffer(stub shim.ChaincodeStubInterface, args []string) ([]byte, error
 			newTransaction.Offers[pricePerUnitStr] = unitsAvailable
 			// Delete the map key for this price tier
 			delete(offers, pricePerUnitStr)
+			// Check exit condition: requestedQuantity = 0
+			if requestedQuantity == 0 {
+				break
+			}
 			// Continue to the next one
 		}
 	}
