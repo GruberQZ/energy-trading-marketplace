@@ -249,8 +249,8 @@ Arguments: an even number greater than or equal to 6
 3. Energy (int as a string)
 4. Cost (int as a string)
 5. Offers accepted in this transaction
-odd numbers >= 5: Offer tier
-even numbers >= 6: Amount bought at offer tier
+- odd numbers >= 5: Offer tier
+- even numbers >= 6: Amount bought at offer tier
 
 Example: ["1490127351","ross","50","200","3","25","5","25"]
 - This set of parameters corresponds to: "At Unix time 1490127351, Ross completed a transaction of 50 units of energy for a cost of 200. 25 units were bought at 3/ea and 25 units were bought at 5/ea.
