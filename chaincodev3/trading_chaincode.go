@@ -1160,7 +1160,7 @@ func addTransaction(stub shim.ChaincodeStubInterface, args []string) ([]byte, er
 
 	// Check parameters
 	// Number of parameters must be even and greater than or equal to 6
-	if len(args) >= 6 || len(args) % 2 != 0 {
+	if len(args) < 6 || len(args) % 2 != 0 {
 		retStr = "Incorrect number of arguments: Expecting an even number >= 6, received " + strconv.Itoa(len(args))
 		fmt.Println(retStr)
 		return []byte(retStr), errors.New(retStr)
