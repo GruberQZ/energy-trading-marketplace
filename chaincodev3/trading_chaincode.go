@@ -206,7 +206,7 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 	fmt.Println("Query() did not find function: " + function)
 
 	// Return an error
-	return []byte("Query() did not find function: " + function), errors.New("Received unknown query function: " + function)
+	return createQueryResponseString(false, "Query() did not find function: " + function)
 
 }
 
@@ -769,6 +769,8 @@ func acceptOffer(stub shim.ChaincodeStubInterface, args []string) ([]byte, error
 	}
 
 	// Calculate the cost of the transaction
+	// Initialize newTransaction map before writing offers details to it
+	newTransaction.Offers = make(map[string]int)
 	// Make an array of price per unit offers in ascending order as integers
 	ascendingOfferKeys := getMapStringKeysAsAscendingInts(offers)
 	totalCost := 0
@@ -1176,6 +1178,7 @@ func addTransaction(stub shim.ChaincodeStubInterface, args []string) ([]byte, er
 		return []byte(retStr), errors.New(retStr)
 	}
 	// Remaining parameters are offers and come in pairs: price tier, quantity
+	newTransaction.Offers = make(map[string]int)
 	offers := args[4:]
 	for len(offers) > 0 {
 		newTransaction.Offers[offers[0]], err = strconv.Atoi(offers[1])
