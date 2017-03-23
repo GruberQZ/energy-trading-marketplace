@@ -1025,6 +1025,7 @@ func cancelTransaction(stub shim.ChaincodeStubInterface, args []string) ([]byte,
 	// Make a slice out of the offer map's keys
 	// Reverse the order so the most expensive tier is first
 	offerKeys := reverseIntSlice(getMapStringKeysAsAscendingInts(offers))
+	fmt.Println("Order of offer keys to refund: ", offerKeys)
 
 	// Set pt.Energy now because unitsToRefund will be used & changed in the algorithm below
 	pt.Energy -= unitsToRefund
@@ -1032,9 +1033,11 @@ func cancelTransaction(stub shim.ChaincodeStubInterface, args []string) ([]byte,
 	// Refund the most expensive units first
 	// Keep refunding until enough units have been returned
 	totalRefund := 0
-	for _, pricePerUnit := range offerKeys {
+	for i, pricePerUnit := range offerKeys {
+		fmt.Println("Refund pass", i, "-", unitsToRefund, "units left to refund")
 		pricePerUnitStr := strconv.Itoa(pricePerUnit)
 		unitsBoughtAtCurrentTier := pt.Offers[pricePerUnitStr]
+		fmt.Println("Currently processing offer tier " + pricePerUnitStr + " - " + strconv.Itoa(unitsBoughtAtCurrentTier) + " bought at this tier")
 		if unitsToRefund <= unitsBoughtAtCurrentTier {
 			// This price tier is the last that needs to be refunded from
 			// Calculate cost of this part of the refund
