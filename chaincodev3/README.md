@@ -39,7 +39,10 @@ Function name: "read"
 Arguments:  
 1. Name of variable  
 
+Example arguments: ["ece"]
+
 Notes/Restrictions:  
+- **Value is always returned as a string, regardless of the data type. As such, the returned value may be garbled.**
 - This function is mainly used for debugging, it need not be used otherwise.  
 - Passing in the name of the variable that does not exist will yield an error message.  
 
@@ -48,7 +51,19 @@ Function name: "getPendingTransaction"
 
 Arguments: None
 
-Notes/Restrictions: This function is used by the EV charger to determine if there are any pending transactions.
+Notes/Restrictions: 
+- This function is used by the EV charger to determine if there are any pending transactions.
+- Example return object below
+```javascript
+{
+  "jsonrpc": "2.0",
+  "result": {
+    "status": "OK",
+    "message": "{\"success\":true,\"data\":[{\"txid\":0,\"offers\":{\"5\":100,\"6\":200,\"7\":300},\"buyer\":\"james\",\"cost\":3800,\"energy\":600,\"status\":\"Pending\"}]}"
+  },
+  "id": 0
+}
+```
 ### Get available offers
 Function name: "getOffers"
 
@@ -56,15 +71,15 @@ Arguments: None
 
 Notes/Restrictions: 
 - Offers represent the units of energy for sale at the EV charger.
-- Offers are sorted by the price per unit of energy.
+- Offers are separated by the price per unit of energy.
 - Price per unit of energy is the key, the number of units for sale at that price per unit is the value of that key.
-- Example return object below.
+- Example return object below: in the example below, there are 100 units for sale for 5/ea, 200 units for sale for 6/ea, and 400 units for sale for 7/ea.
 ```javascript
 {
   "jsonrpc": "2.0",
   "result": {
     "status": "OK",
-    "message": "{\"offers\":{\"3\":{\"cost\":100,\"energy\":100,\"seller\":\"blake\",\"persist\":true},\"4\":{\"cost\":200,\"energy\":200,\"seller\":\"blake\",\"persist\":true}}}"
+    "message": "{\"success\":true,\"data\":{\"5\":100,\"6\":200,\"7\":400}}"
   },
   "id": 0
 }
@@ -77,7 +92,17 @@ Arguments: None
 Notes/Restrictions:
 - Sums all of the available energy at all price per unit tiers.
 - Successful query returns an integer.
-
+- Example return object below.
+```javascript
+{
+  "jsonrpc": "2.0",
+  "result": {
+    "status": "OK",
+    "message": "{\"success\":true,\"data\":700}"
+  },
+  "id": 0
+}
+```
 ### Get transactions
 Function name: "getTransactions"
 
@@ -93,7 +118,7 @@ Notes/Restrictions:
   "jsonrpc": "2.0",
   "result": {
     "status": "OK",
-    "message": "{\"transactions\":[{\"txid\":1488265396,\"offerid\":\"0\",\"cost\":30,\"energy\":100,\"seller\":\"james\",\"persist\":true,\"buyer\":\"blake\",\"status\":\"Completed\"},{\"txid\":1488266074,\"offerid\":\"1\",\"cost\":500,\"energy\":200,\"seller\":\"blake\",\"persist\":false,\"buyer\":\"james\",\"status\":\"Completed\"},{\"txid\":1488266428,\"offerid\":\"2\",\"cost\":500,\"energy\":200,\"seller\":\"blake\",\"persist\":false,\"buyer\":\"james\",\"status\":\"Refunded 250 (50%)\"},{\"txid\":1488267327,\"offerid\":\"3\",\"cost\":100,\"energy\":100,\"seller\":\"blake\",\"persist\":true,\"buyer\":\"james\",\"status\":\"Completed\"},{\"txid\":1488267434,\"offerid\":\"3\",\"cost\":100,\"energy\":100,\"seller\":\"blake\",\"persist\":true,\"buyer\":\"james\",\"status\":\"Completed\"},{\"txid\":1488267532,\"offerid\":\"4\",\"cost\":200,\"energy\":200,\"seller\":\"blake\",\"persist\":true,\"buyer\":\"james\",\"status\":\"Completed\"},{\"txid\":1488267599,\"offerid\":\"5\",\"cost\":400,\"energy\":400,\"seller\":\"blake\",\"persist\":false,\"buyer\":\"james\",\"status\":\"Completed\"},{\"txid\":1488267756,\"offerid\":\"4\",\"cost\":200,\"energy\":200,\"seller\":\"blake\",\"persist\":true,\"buyer\":\"james\",\"status\":\"Completed\"},{\"txid\":1488308042,\"offerid\":\"6\",\"cost\":400,\"energy\":200,\"seller\":\"james\",\"persist\":false,\"buyer\":\"blake\",\"status\":\"Completed\"}]}"
+    "message": "{\"success\":true,\"data\":[{\"txid\":1490249345,\"offers\":{\"5\":100},\"buyer\":\"james\",\"cost\":500,\"energy\":100,\"status\":\"Completed\"},{\"txid\":1490249392,\"offers\":{\"5\":100},\"buyer\":\"james\",\"cost\":500,\"energy\":100,\"status\":\"Completed\"},{\"txid\":1490249439,\"offers\":{\"3\":100},\"buyer\":\"james\",\"cost\":300,\"energy\":100,\"status\":\"Completed\"},{\"txid\":1490249671,\"offers\":{\"3\":99},\"buyer\":\"james\",\"cost\":297,\"energy\":99,\"status\":\"Refunded 6251\"},{\"txid\":1490249746,\"offers\":{\"3\":119},\"buyer\":\"james\",\"cost\":357,\"energy\":119,\"status\":\"Refunded 6131\"},{\"txid\":1490250450,\"offers\":{\"3\":82,\"4\":250,\"5\":5800},\"buyer\":\"james\",\"cost\":30246,\"energy\":6132,\"status\":\"Completed\"}]}"
   },
   "id": 0
 }
@@ -113,7 +138,7 @@ Notes/Restrictions:
   "jsonrpc": "2.0",
   "result": {
     "status": "OK",
-    "message": "{\"customers\":{\"blake\":1370,\"james\":710,\"jose\":0,\"ross\":0}}"
+    "message": "{\"success\":true,\"data\":{\"james\":976800,\"owner\":32200}}"
   },
   "id": 0
 }
@@ -125,15 +150,17 @@ Arguments:
 
 1. Customer ID
 
+Example arguments: Get James' balance: ["james"]
+
 Notes/Restrictions:
-- Returns the customer ID and account balance of a customer.
+- Returns the account balance of a customer.
 - Example return object below.
 ```javascript
 {
   "jsonrpc": "2.0",
   "result": {
     "status": "OK",
-    "message": "{\"custid\":\"blake\",\"balance\":1370}"
+    "message": "{\"success\":true,\"data\":976800}"
   },
   "id": 0
 }
@@ -148,6 +175,8 @@ Arguments:
 1. Offer ID
 2. Quantity to add
 
+Example arguments: Add 100 units for 5/ea: ["5","100"]
+
 Notes/Restrictions:
 - Offers are identified by the price per unit of the energy, also referred to as offer tier.
 - If offer ID exists, quantity will be added to the existing tier.
@@ -159,7 +188,9 @@ Function name: "subtractOfferQuantity"
 Arguments:
 
 1. Offer ID
-2. Quantity to add
+2. Quantity to subtract
+
+Example arguments: Remove 100 units for 5/ea: ["5","100"]
 
 Notes/Restrictions:
 - Offers are identified by the price per unit of the energy, also referred to as offer tier.
@@ -173,6 +204,8 @@ Function name: "addCustomer"
 Arguments: 
 
 1. Customer ID
+
+Example arguments: Add a customer named Ross: ["ross"]
 
 Notes/Restrictions:
 - Used to create a new customer account
@@ -189,6 +222,8 @@ Arguments:
 1. Customer ID
 2. Amount to add
 
+Example arguments: Add 5000 to James' account: ["james","5000"]
+
 Notes/Restrictions:
 - Used to add funds to a customer account
 - Customer ID must match a customer account that already exists
@@ -201,6 +236,8 @@ Arguments:
 
 1. Buyer's Customer ID
 2. Units of energy to buy
+
+Example arguments: James wants to purchase 500 units of energy: ["james","500"]
 
 Notes/Restrictions:
 - Units of energy to buy must be an integer string
@@ -229,6 +266,8 @@ Function name: "cancelTransaction"
 Arguments: 
 
 1. Number of units to refund
+
+Example arguments: Refund 300 units of energy: ["300"]
 
 Notes/Restrictions:
 - Used by the EV charger to partially refund the customer part of their purchase if their transaction did not complete
