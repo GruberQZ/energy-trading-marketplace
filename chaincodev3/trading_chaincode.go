@@ -1026,6 +1026,9 @@ func cancelTransaction(stub shim.ChaincodeStubInterface, args []string) ([]byte,
 	// Reverse the order so the most expensive tier is first
 	offerKeys := reverseIntSlice(getMapStringKeysAsAscendingInts(offers))
 
+	// Set pt.Energy now because unitsToRefund will be used & changed in the algorithm below
+	pt.Energy -= unitsToRefund
+
 	// Refund the most expensive units first
 	// Keep refunding until enough units have been returned
 	totalRefund := 0
@@ -1078,7 +1081,6 @@ func cancelTransaction(stub shim.ChaincodeStubInterface, args []string) ([]byte,
 	customers["owner"] -= totalRefund
 
 	// Update pending transaction fields
-	pt.Energy -= unitsToRefund
 	pt.Cost -= totalRefund
 	pt.TXID = time.Now().Unix()
 	pt.Status = "Refunded " + args[0]
