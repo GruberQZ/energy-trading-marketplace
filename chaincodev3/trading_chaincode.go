@@ -1024,7 +1024,7 @@ func cancelTransaction(stub shim.ChaincodeStubInterface, args []string) ([]byte,
 
 	// Make a slice out of the offer map's keys
 	// Reverse the order so the most expensive tier is first
-	offerKeys := reverseIntSlice(getMapStringKeysAsAscendingInts(offers))
+	offerKeys := reverseIntSlice(getMapStringKeysAsAscendingInts(pt.Offers))
 	fmt.Println("Order of offer keys to refund: ", offerKeys)
 
 	// Set pt.Energy now because unitsToRefund will be used & changed in the algorithm below
