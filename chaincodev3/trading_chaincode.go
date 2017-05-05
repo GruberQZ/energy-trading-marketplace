@@ -723,7 +723,13 @@ func acceptOffer(stub shim.ChaincodeStubInterface, args []string) ([]byte, error
 	buyer := strings.ToLower(args[0])
 	requestedQuantity, err := strconv.Atoi(args[1])
 	if err != nil {
-		retStr = "Second argument (Offer ID) must be an integer string"
+		retStr = "Second argument (amount of energy) must be an integer string"
+		fmt.Println(retStr)
+		return []byte(retStr), errors.New(retStr)
+	}
+	// requestedQuantity cannot be less than or equal to 0
+	if requestedQuantity <= 0 {
+		retStr = "Second argument (amount of energy) cannot be less than or equal to 0"
 		fmt.Println(retStr)
 		return []byte(retStr), errors.New(retStr)
 	}
